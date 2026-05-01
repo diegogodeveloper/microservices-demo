@@ -1,4 +1,4 @@
-package com.ms.demo;
+package com.ms.demo.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

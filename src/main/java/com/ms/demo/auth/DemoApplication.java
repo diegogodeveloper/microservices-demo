@@ -1,4 +1,4 @@
-package com.ms.demo;
+package com.ms.demo.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

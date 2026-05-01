@@ -1,0 +1,37 @@
+package com.ms.demo.auth.infrastructure.adapter.in.rest;
+
+import com.ms.demo.auth.application.port.in.LoginUseCase;
+import com.ms.demo.auth.domain.exception.InvalidCredentialsException;
+import com.ms.demo.auth.domain.model.Credentials;
+import com.ms.demo.auth.infrastructure.adapter.in.rest.dto.LoginRequest;
+import com.ms.demo.auth.infrastructure.adapter.in.rest.dto.LoginResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final LoginUseCase loginUseCase;
+
+    public AuthController(LoginUseCase loginUseCase) {
+        this.loginUseCase = loginUseCase;
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        try {
+            var token = loginUseCase.login(
+                    new Credentials(request.username(), request.password())
+            );
+
+            return new LoginResponse(token.value());
+        } catch (InvalidCredentialsException ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        }
+    }
+}
