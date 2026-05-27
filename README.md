@@ -1,5 +1,5 @@
 # Auth Service - Hexagonal Architecture
-
+Project currently under development.
 Backend authentication microservice built with Spring Boot using Hexagonal Architecture principles.
 
 ## Features
