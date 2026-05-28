@@ -1,6 +1,5 @@
 package com.ms.demo.auth.infrastructure.adapter.in.rest;
 
-import com.ms.demo.auth.application.port.in.GetAuthenticatedUserUseCase;
 import com.ms.demo.auth.application.port.in.LoginUseCase;
 import com.ms.demo.auth.domain.model.Credentials;
 import com.ms.demo.auth.domain.model.User;
@@ -11,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,11 +22,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final LoginUseCase loginUseCase;
-    private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
-    public AuthController(LoginUseCase loginUseCase, GetAuthenticatedUserUseCase getAuthenticatedUserUseCase) {
+    public AuthController(LoginUseCase loginUseCase) {
         this.loginUseCase = loginUseCase;
-        this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
     }
 
 
@@ -47,8 +44,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public User getAuthenticatedUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        return getAuthenticatedUserUseCase.getAuthenticatedUser(authHeader);
+    public User getAuthenticatedUser(Authentication authentication ) {
+        return new User(authentication.getName());
     }
 
 
